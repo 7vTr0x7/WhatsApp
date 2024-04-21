@@ -4,7 +4,7 @@ import { query, mutation } from "./_generated/server";
 export const getTasks = query({
   args: {},
   handler: async (ctx, args) => {
-    const tasks = await ctx.db.query("task").collect();
+    const tasks = await ctx.db.query("tasks").collect();
     return tasks;
   },
 });
@@ -14,7 +14,7 @@ export const addTask = mutation({
     text: v.string(),
   },
   handler: async (ctx, args) => {
-    const taskId = await ctx.db.insert("task", {
+    const taskId = await ctx.db.insert("tasks", {
       text: args.text,
       completed: false,
     });
@@ -23,7 +23,7 @@ export const addTask = mutation({
 });
 export const completeTask = mutation({
   args: {
-    id: v.id("task"),
+    id: v.id("tasks"),
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, { completed: true });
@@ -31,7 +31,7 @@ export const completeTask = mutation({
 });
 export const deleteTask = mutation({
   args: {
-    id: v.id("task"),
+    id: v.id("tasks"),
   },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.id);
