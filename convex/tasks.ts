@@ -9,7 +9,7 @@ export const getTasks = query({
   },
 });
 
-export const addTasks = mutation({
+export const addTask = mutation({
   args: {
     text: v.string(),
   },
@@ -19,5 +19,21 @@ export const addTasks = mutation({
       completed: false,
     });
     return taskId;
+  },
+});
+export const completeTask = mutation({
+  args: {
+    id: v.id("task"),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, { completed: true });
+  },
+});
+export const deleteTask = mutation({
+  args: {
+    id: v.id("task"),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
   },
 });
